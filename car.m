@@ -22,7 +22,7 @@ function varargout = car(varargin)
 
 % Edit the above text to modify the response to help car
 
-% Last Modified by GUIDE v2.5 15-Aug-2017 22:32:23
+% Last Modified by GUIDE v2.5 16-Aug-2017 17:11:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -88,9 +88,19 @@ function button_ok_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % global car_table_data;
-
-
-
+global dis_info;
+global sel_list;
+contents = cellstr(get(handles.popupmenu_dis,'String'));
+value = contents{get(handles.popupmenu_dis,'Value')};
+if strcmp(value,sel_list{1})
+    dis_info(1)=1;
+elseif strcmp(value,sel_list{2})
+    dis_info(1)=2;
+end
+dis_info(2) = str2double(get(handles.edit_dis_miu,'String'));
+dis_info(3) = str2double(get(handles.edit_dis_sigma,'String'));
+dis_info(4) = str2double(get(handles.edit_dis_max,'String'));
+dis_info(5) = str2double(get(handles.edit_dis_min,'String'));
 % --- Executes just before car is made visible.
 function car_OpeningFcn(hObject, eventdata, handles, varargin)
 %%
@@ -112,6 +122,14 @@ global car_total;
 car_total = 0;
 global sel_list;
 sel_list = {'对数正态','正态','双峰正态'};
+load_style = load('style.mat');
+main_handle.load_style = load_style.load_style;
+global dis_info;
+dis_info = [1 1 0 1000 0]';
+set(handles.edit_dis_miu,'String',num2str(dis_info(2)));
+set(handles.edit_dis_sigma,'String',num2str(dis_info(3)));
+set(handles.edit_dis_max,'String',num2str(dis_info(4)));
+set(handles.edit_dis_min,'String',num2str(dis_info(5)));
 update_table();
 % Update handles structure
 guidata(hObject, handles);
@@ -425,7 +443,7 @@ function popupmenu_dis_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to popupmenu_dis (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-list = {'指数正态','正态'};
+list = {'对数正态','正态'};
 set(hObject,'String',list);
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
@@ -531,4 +549,8 @@ function button_style_Callback(hObject, eventdata, handles)
 % hObject    handle to button_style (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-run('style');
+% run('style');
+global main_handle;
+load_style = load('style.mat');
+main_handle.load_style = load_style.load_style;
+style(main_handle.load_style,main_handle);

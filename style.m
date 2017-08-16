@@ -44,9 +44,9 @@ end
 % End initialization code - DO NOT EDIT
 
 function update_table()
-global style;
+global load_style;
 global main_handles;
-table_size = size(style);
+table_size = size(load_style);
 table_data = get(main_handles.table_style,'data');
 for i=1:table_size(1)
     for j=1:table_size(2)
@@ -59,7 +59,7 @@ for i=1:table_size(1)
         elseif i==6 && j>9
             table_data{i,j}='No need';
         else
-            table_data{i,j} = num2str(style(i,j));
+            table_data{i,j} = num2str(load_style(i,j));
         end
     end
 end
@@ -79,9 +79,10 @@ function style_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 global main_handles ;
 main_handles = handles;
-global style;
-style = load('style.mat');
-style = style.style;
+global load_style;
+load_style = varargin{1};
+global fathar_handles;
+fathar_handles =  varargin{1};
 update_table();
 % Update handles structure
 guidata(hObject, handles);
@@ -106,6 +107,25 @@ function button_ok_Callback(hObject, eventdata, handles)
 % hObject    handle to button_ok (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+global fathar_handles;
+global load_style;
+global main_handles;
+table_data = get(main_handles.table_style,'data');
+table_size = size(table_data);
+load_style=zeros(table_size);
+for i=1:table_size(1)
+    for j=1:table_size(2)
+        if strcmp(table_data{i,j},'No need')
+            break;
+        else
+            load_style(i,j) = str2double(table_data{i,j});
+        end
+    end
+end
+load_style
+fathar_handles.load_style = load_style;
+save('style.mat','load_style'); 
+close;
 
 
 % --- Executes on button press in button_cancel.
@@ -113,6 +133,7 @@ function button_cancel_Callback(hObject, eventdata, handles)
 % hObject    handle to button_cancel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+close;
 
 
 % --- Executes during object creation, after setting all properties.
