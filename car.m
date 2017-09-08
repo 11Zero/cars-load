@@ -101,6 +101,70 @@ dis_info(2) = str2double(get(handles.edit_dis_miu,'String'));
 dis_info(3) = str2double(get(handles.edit_dis_sigma,'String'));
 dis_info(4) = str2double(get(handles.edit_dis_max,'String'));
 dis_info(5) = str2double(get(handles.edit_dis_min,'String'));
+global car_table_data;
+N = car_table_data(:,2)';
+WeightType = car_table_data(:,3:10);
+Distance = dis_info';
+xlsdata4 = cell(15,8);
+global main_handle;
+temp_style = main_handle.load_style;
+
+xlsdata4{2,3} = temp_style(1,2);
+xlsdata4{3,3} = temp_style(1,1);
+xlsdata4{3,4} = temp_style(1,3);
+
+xlsdata4{4,3} = temp_style(2,2);
+xlsdata4{5,3} = temp_style(2,1);
+xlsdata4{5,4} = temp_style(2,3);
+
+xlsdata4{6,3} = temp_style(3,2);
+xlsdata4{7,3} = temp_style(3,1);
+xlsdata4{7,4} = temp_style(3,3);
+
+xlsdata4{8,3} = temp_style(4,2);
+xlsdata4{8,4} = temp_style(4,4);
+xlsdata4{9,3} = temp_style(4,1);
+xlsdata4{9,4} = temp_style(4,3);
+xlsdata4{9,5} = temp_style(4,5);
+
+xlsdata4{10,3} = temp_style(5,2);
+xlsdata4{10,4} = temp_style(5,4);
+xlsdata4{10,5} = temp_style(5,6);
+xlsdata4{11,3} = temp_style(5,1);
+xlsdata4{11,4} = temp_style(5,3);
+xlsdata4{11,5} = temp_style(5,5);
+xlsdata4{11,6} = temp_style(5,7);
+
+xlsdata4{12,3} = temp_style(6,2);
+xlsdata4{12,4} = temp_style(6,4);
+xlsdata4{12,5} = temp_style(6,6);
+xlsdata4{12,6} = temp_style(6,8);
+xlsdata4{13,3} = temp_style(6,1);
+xlsdata4{13,4} = temp_style(6,3);
+xlsdata4{13,5} = temp_style(6,5);
+xlsdata4{13,6} = temp_style(6,7);
+xlsdata4{13,7} = temp_style(6,9);
+
+xlsdata4{14,3} = temp_style(7,2);
+xlsdata4{14,4} = temp_style(7,4);
+xlsdata4{14,5} = temp_style(7,6);
+xlsdata4{14,6} = temp_style(7,8);
+xlsdata4{14,7} = temp_style(7,10);
+xlsdata4{15,3} = temp_style(7,1);
+xlsdata4{15,4} = temp_style(7,3);
+xlsdata4{15,5} = temp_style(7,5);
+xlsdata4{15,6} = temp_style(7,7);
+xlsdata4{15,7} = temp_style(7,9);
+xlsdata4{15,8} = temp_style(7,11);
+RandTraffic = makeData(N,WeightType,Distance,xlsdata4);
+
+axes(handles.axes_result);
+plot(1:length(RandTraffic),RandTraffic);
+xlabel('随机车辆荷载流长度');ylabel('轴重/KN');
+fid = fopen('RandTraffic.txt','wt'); 
+fprintf(fid,'%g\n',RandTraffic);    
+fclose(fid);
+xlswrite('RandTraffic.xlsx',RandTraffic);
 % --- Executes just before car is made visible.
 function car_OpeningFcn(hObject, eventdata, handles, varargin)
 %%

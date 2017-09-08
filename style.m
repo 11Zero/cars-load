@@ -22,7 +22,7 @@ function varargout = style(varargin)
 
 % Edit the above text to modify the response to help style
 
-% Last Modified by GUIDE v2.5 15-Aug-2017 21:46:38
+% Last Modified by GUIDE v2.5 23-Aug-2017 13:04:47
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -122,7 +122,6 @@ for i=1:table_size(1)
         end
     end
 end
-load_style
 fathar_handles.load_style = load_style;
 save('style.mat','load_style'); 
 close;
